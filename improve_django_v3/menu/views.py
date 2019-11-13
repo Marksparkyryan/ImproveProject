@@ -1,20 +1,25 @@
+from datetime import datetime
+# import pytz
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.utils import timezone
 from operator import attrgetter
-from datetime import datetime
+
 from django.core.exceptions import ObjectDoesNotExist
-from .models import *
+from .models import Menu
 from .forms import *
 
-def menu_list(request):
-    all_menus = Menu.objects.all()
-    menus = []
-    for menu in all_menus:
-        if menu.expiration_date >= timezone.now():
-            menus.append(menu)
 
-    menus = sorted(menus, key=attrgetter('expiration_date'))
+def menu_list(request):
+    """Display all menus and items related to each menu ordered by 
+    expiration date 
+    """
+    menus = Menu.objects.all().prefetch_related(
+        'items'
+    ).order_by(
+        'expiration_date',
+    )
     return render(request, 'menu/list_all_current_menus.html', {'menus': menus})
 
 def menu_detail(request, pk):

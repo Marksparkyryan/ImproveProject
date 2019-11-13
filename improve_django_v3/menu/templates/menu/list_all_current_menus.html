@@ -1,38 +1,54 @@
-<html>
-    <head>
-        <title>Soda Fountain</title>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    </head>
-    <body>
-        <div class="page-header">
-            {% if user.is_authenticated %}
-                <a href="{% url 'menu_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-            {% endif %}
-            <h1><a href="/">Soda Fountain</a></h1>
-        </div>
-        <div class="content container">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="post">
-                        {% if menu.expiration_date %}
-                            <div class="date">
-                                Expires on: {{ menu.expiration_date }}
-                            </div>
-                        {% endif %}
-                        
-                        {% for menu in menus %}
-                            <h1>
-                                {% if user.is_authenticated %}
-                                    <a class="btn btn-default" href="{% url 'menu_edit' pk=menu.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-                                {% endif %}
-                                <a href="{% url 'menu_detail' pk=menu.pk %}">{{ menu.season }}</a>
-                            </h1>
-                            <p>{{ menu.items.all|join:", "}}</p>
-                        {% endfor %}
-                    </div>
-                </div>
+{% extends 'menu/base.html' %} {% load menu_extras %} {% block body %}
+
+<!-- Jumbotron -->
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Fluid jumbotron</h1>
+    <p class="lead">
+      This is a modified jumbotron that occupies the entire horizontal space of
+      its parent.
+    </p>
+  </div>
+</div>
+<!-- /Jumbotron -->
+
+
+<div class="container">
+    <div class="row">
+        <!-- Filter List -->
+        <div class="col-sm-2 bg-transparent">
+            <div class="list-group mb-2">
+                <button type="button" class="list-group-item list-group-item-action">All</button>
+                <button type="button" class="list-group-item list-group-item-action">Fresh</button>
+                <button type="button" class="list-group-item list-group-item-action">Expired</button>
+            </div>
+            <div class="list-group">
+                {% menu_years as menu_years %} {% for year in menu_years %}
+                <button type="button" class="list-group-item list-group-item-action">
+                    {{ year }}
+                </button>
+                {% endfor %}
             </div>
         </div>
-    </body>
-</html>
+    <!-- /Filter List -->
+
+    <!-- Menu Cards -->
+    <div class="col-sm-10">
+        <div class="card-columns">
+            {% for menu in menus %}
+            <div class="card text-center inline-block">
+                <div class="card-body">
+                    <h5 class="card-title">{{ menu.season }}</h5>
+                    <p class="card-text">{{ menu.items.all|join:", " }}</p>
+                    <p class="card-text">
+                        <small class="text-muted">Expires: {{ menu.expiration_date }}</small>
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- /Menu Cards -->
+  </div>
+</div>
+{% endblock %}
