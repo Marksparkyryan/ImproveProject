@@ -1,33 +1,42 @@
-<html>
-    <head>
-        <title>Soda Fountain</title>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    </head>
-    <body>
-        <div class="page-header">
-            {% if user.is_authenticated %}
-                <a href="{% url 'menu_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-            {% endif %}
-            <h1><a href="/">Soda Fountain</a></h1>
-        </div>
-        <div class="content container">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="post">
-                        {% comment %}{% if user.is_authenticated %}
-                        	<a class="btn btn-default" href="{% url 'item_edit' pk=item.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-                        {% endif %}{% endcomment %}
-                        <h1>{{ item.name }}</h1>
-                        <p><strong>Head Chef:</strong> {{ item.chef }}</p>
-                        <p>{{ item.description }}</p>
-                        <p><strong>Ingredients: </strong>{{ item.ingredients.all|join:", " }}</p>
-                        {% if item.standard %}
-                            <p><em>This item is available year-round.</em></p>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
+{% extends 'menu/base.html' %}
+
+{% block body %}
+<div class="container">
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-dark">
+        <li class="breadcrumb-item"><a href="{% url 'menu:menu_detail' pk=menu.id %}">{{ menu.season }}</a></li>
+        <li class="breadcrumb-item"><a href="#">{{ item }}</a></li>
+    </ol>
+</nav>
+<!-- /Breadcrumb -->
+
+<!-- Detail Jumbotron -->
+<div class="jumbotron p-4 p-md-5 text-white rounded bg-dark mb-3">
+    <div class="col-md-6 px-0">
+        <h1 class="display-4 font-italic">{{ item.name }}</h1>
+        <blockquote class="blockquote text-left">
+            <footer class="blockquote-footer">{{ item.chef }}, <cite title="Source Title">Chef</cite></footer>
+        </blockquote>
+        <p class="lead mb-4">Multiple lines of text that form the lede, informing
+            new readers quickly and efficiently about what’s most interesting in
+            this post’s contents.</p>
+        <ul class="pl-3">
+            {% for ingredient in item.ingredients.all %}
+            <li>
+                <p>{{ ingredient.name }}</p>
+            </li>
+            
+            {% endfor %}
+        </ul>  
+        
+    </div>
+    <p class="text-muted font-italic mt-5 d-inline-block mb-0">created: {{ item.created_date }}</p>
+    {% if item.standard %}
+    <p class="text-muted font-italic mt-5 d-inline-block float-right mb-0">Standard Item</p>
+    {% endif %}
+</div>
+<!-- /Detail Jumbotron -->
+</div>
+
+{% endblock %}

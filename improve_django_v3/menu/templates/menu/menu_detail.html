@@ -2,33 +2,40 @@
 
 {% block body %}
 <div class="container">
-
+        <!-- Breadcrumb -->
         <nav aria-label="breadcrumb">
-                <ol class="breadcrumb bg-dark">
-                  <li class="breadcrumb-item"><a href="#">{{ menu.season }}</a></li>
-                </ol>
-              </nav>
-
-        <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark mb-3">
+            <ol class="breadcrumb bg-dark">
+                <li class="breadcrumb-item"><a href="#">{{ menu.season }}</a></li>
+            </ol>
+            </nav>
+            <!-- /Breadcrumb -->
+            
+            <!-- Detail Jumbotron -->
+            <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark mb-3">
                 <div class="col-md-6 px-0">
                     <h1 class="display-4 font-italic">{{ menu.season }}</h1>
                     <ul class="lead my-3 pl-0">
                         {% for item in menu.items.all %}
-                        <a href="{% url 'menu:item_detail' pk=item.pk %}"><h4 class="my-0">{{ item.name }}</h4></a>
-                        <p class="lead mb-4">Multiple lines of text that form the lede, informing new readers quickly and efficiently
-                                about what’s most interesting in this post’s contents.</p>
+                        <a href="{% url 'menu:item_detail' item_pk=item.pk menu_pk=menu.pk %}">
+                            <h4 class="my-0">{{ item.name }}</h4>
+                        </a>
+                        <p class="lead mb-4">Multiple lines of text that form the lede, informing new readers quickly and
+                            efficiently
+                            about what’s most interesting in this post’s contents.</p>
                         {% endfor %}
                     </ul>
-                    
+            
                 </div>
             </div>
+            <!-- /Detail Jumbotron -->
+            
             <nav class="navbar navbar-light bg-dark rounded p-4">
-                    <form class="form-inline">
-                      <p class="lead mb-0 text-white font-weight-bold">Menu expires on:</p>
-                      <p class="text-white mb-0 font-italic ml-2">{{ menu.expiration_date|date:"F j, Y" }}</p>
-                    </form>
-                    <a href="{% url 'menu:menu_edit' pk=menu.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                  </nav>
+                <form class="form-inline">
+                    <p class="lead mb-0 text-white font-weight-bold">Menu expires on:</p>
+                    <p class="text-white mb-0 font-italic ml-2">{{ menu.expiration_date|date:"F j, Y" }}</p>
+                </form>
+                <a href="{% url 'menu:menu_edit' pk=menu.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+            </nav>
 </div>
 
 {% endblock %}

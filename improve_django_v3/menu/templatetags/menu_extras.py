@@ -18,8 +18,6 @@ def menu_years():
         lowest=Min('expiration_date')
     )
     lowest = int(query['lowest'].strftime('%Y'))    
-    print(lowest)
     highest = int(datetime.datetime.now().strftime('%Y'))
-    print(highest)
     years = [x for x in range(lowest, highest + 1)]
     return years
