@@ -17,7 +17,7 @@ def menu_years():
     ).aggregate(
         lowest=Min('expiration_date')
     )
-    lowest = int(query['lowest'].strftime('%Y'))    
-    highest = int(datetime.datetime.now().strftime('%Y'))
+    lowest = 2010
+    highest = int(datetime.date.today().strftime('%Y'))
     years = [x for x in range(lowest, highest + 1)]
     return years
