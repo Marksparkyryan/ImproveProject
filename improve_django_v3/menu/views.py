@@ -2,6 +2,7 @@ from datetime import datetime
 # import pytz
 
 from django.core.urlresolvers import reverse
+from django.db.models import Min, Max, Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.utils import timezone
@@ -9,19 +10,21 @@ from operator import attrgetter
 
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Menu, Item, Ingredient
-from .forms import  MenuForm
+from .forms import  MenuCreateUpdateForm, MenuSearchForm
 
 
 def menu_list(request):
     """Display all menus and items related to each menu ordered by 
     expiration date 
     """
-    menus = Menu.objects.all().prefetch_related(
-        'items'
-    ).order_by(
-        'expiration_date',
-    )
-    return render(request, 'menu/list_all_current_menus.html', {'menus': menus})
+    menus = Menu.objects.prefetch_related(
+        Prefetch('items', queryset=Item.objects.all().only('name'))
+    )[:9]
+    context = {
+        'menus': menus,
+        'searchform': MenuSearchForm()
+    }
+    return render(request, 'menu/list_all_current_menus.html', context)
 
 
 def menu_detail(request, pk):
@@ -32,7 +35,11 @@ def menu_detail(request, pk):
     ).prefetch_related(
         'items'
     ).first()
-    return render(request, 'menu/menu_detail.html', {'menu': menu})
+    context = {
+        'menu': menu,
+        'searchform': MenuSearchForm()
+    }
+    return render(request, 'menu/menu_detail.html', context)
 
 
 def item_detail(request, item_pk, menu_pk):
@@ -57,50 +64,60 @@ def item_detail(request, item_pk, menu_pk):
     context = {
         'item': item,
         'menu': menu,
+        'searchform': MenuSearchForm()
     }
     return render(request, 'menu/detail_item.html', context)
 
 
 def create_new_menu(request):
-    form = MenuForm(request.POST)
+    """Provide unbound MenuCreateUpdateForm
+    """
+    form = MenuCreateUpdateForm()
     if request.method == "POST":
-        form = MenuForm(request.POST)
+        form = MenuCreateUpdateForm(request.POST)
         if form.is_valid():
-            menu = form.save(commit=False)
-            menu.created_date = timezone.now()
-            menu.save()
-            return redirect('menu_detail', pk=menu.pk)
-    
-    return render(request, 'menu/menu_edit.html', {'form': form})
+            menu = form.save()
+            return redirect(reverse('menu:menu_detail', kwargs={'pk': menu.id }))
+    context = {
+        'form': form,
+        'searchform': MenuSearchForm()
+    }
+    return render(request, 'menu/menu_create_update.html', context)
 
 
 def edit_menu(request, pk):
-    menu = Menu.objects.get(pk=pk)
-    form = MenuForm(instance=menu)
+    menu = Menu.objects.filter(
+        id=pk
+        ).prefetch_related(
+            'items'
+        ).first()
+    form = MenuCreateUpdateForm(instance=menu)
     if request.method == 'POST':
-        form = MenuForm(data=request.POST, instance=menu)
-        print(form.data)
+        form = MenuCreateUpdateForm(data=request.POST, instance=menu)
         if form.is_valid():
-            cleaned = form.cleaned_data
-            menu = form.save(commit=False)
-            menu.save()
+            menu = form.save()
             return redirect(reverse('menu:menu_detail', kwargs={'pk': pk}))
     context = {
         'form': form,
         'menu': menu,
+        'searchform': MenuSearchForm()
     }
-    print(form.data)
-    return render(request, 'menu/menu_edit.html', context)
+    return render(request, 'menu/menu_create_update.html', context)
 
-    # menu = get_object_or_404(Menu, pk=pk)
-    # items = Item.objects.all()
-    # if request.method == "POST":
-    #     menu.season = request.POST.get('season', '')
-    #     menu.expiration_date = datetime.strptime(request.POST.get('expiration_date', ''), '%m/%d/%Y')
-    #     menu.items = request.POST.get('items', '')
-    #     menu.save()
 
-    # return render(request, 'menu/menu_edit.html', {
-    #     'menu': menu,
-    #     'items': items,
-    #     })
+def menu_search(request):
+    if request.method == 'GET':
+        searchform = MenuSearchForm(request.GET)
+        if searchform.is_valid():
+            query = searchform.cleaned_data['q']
+            menus = Menu.objects.filter(
+                season__icontains=query
+            ).prefetch_related(
+                'items'
+            )
+            context = {
+                'menus': menus,
+                'searchform': MenuSearchForm()
+            }
+            return render(request, 'menu/list_all_current_menus.html', context)
+    return render(request, 'menu/list_all_current_menus.html', context)

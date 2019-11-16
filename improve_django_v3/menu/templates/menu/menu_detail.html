@@ -32,13 +32,16 @@
             <nav class="navbar navbar-light bg-dark rounded p-4">
                 <form class="form-inline">
                     <p class="lead mb-0 text-white font-weight-bold">Menu expires on:</p>
-                    <p class="text-white mb-0 font-italic ml-2">{{ menu.expiration_date|date:"F j, Y" }}</p>
+                    <p class="text-white mb-0 font-italic ml-2">{{ menu.expiration_date }}</p>
                 </form>
                 <a href="{% url 'menu:menu_edit' pk=menu.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
             </nav>
 </div>
 
 {% endblock %}
+
+
+
 
 <!-- <html>
     <head>

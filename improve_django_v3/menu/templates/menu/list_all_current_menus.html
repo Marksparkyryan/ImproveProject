@@ -1,5 +1,6 @@
 {% extends 'menu/base.html' %} 
-{% load menu_extras %} 
+
+{% load menu_extras %}
 
 {% block body %}
 <div class="container">
@@ -13,11 +14,17 @@
                 <button type="button" class="list-group-item list-group-item-action">Expired</button>
             </div>
             <div class="list-group">
-                {% menu_years as menu_years %} {% for year in menu_years %}
+                
+                {% menu_years menus as years %}
+                {% if years %}
+                {% for year in years %}
                 <button type="button" class="list-group-item list-group-item-action">
-                    {{ year }}
+                {{ year }}
                 </button>
                 {% endfor %}
+                {% endif %}
+                
+                
             </div>
         </div>
     <!-- /Filter List -->
