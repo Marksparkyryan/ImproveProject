@@ -1,8 +1,8 @@
-from datetime import datetime
+import datetime
 # import pytz
 
 from django.core.urlresolvers import reverse
-from django.db.models import Min, Max, Prefetch
+from django.db.models import Min, Max, Prefetch, Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.utils import timezone
@@ -13,16 +13,38 @@ from .models import Menu, Item, Ingredient
 from .forms import  MenuCreateUpdateForm, MenuSearchForm
 
 
-def menu_list(request):
+def menu_list(request, query='fresh'):
     """Display all menus and items related to each menu ordered by 
     expiration date 
     """
-    menus = Menu.objects.prefetch_related(
-        Prefetch('items', queryset=Item.objects.all().only('name'))
-    )[:9]
+    if query == 'all':
+        menus = Menu.objects.all().prefetch_related(
+            'items'
+        )
+    if query == 'fresh':
+        menus = Menu.objects.all().filter(
+            expiration_date__gte=datetime.datetime.now()
+        ).prefetch_related(
+            'items'
+        )
+    if query == 'expired':
+        menus = Menu.objects.all().filter(
+            expiration_date__lt=datetime.datetime.now()
+        ).prefetch_related(
+            'items'
+        ) 
+    if query.isdigit():
+        menus = Menu.objects.all().filter(
+            Q(expiration_date__gte=datetime.datetime(year=int(query), month=1, day=1)) &
+            Q(expiration_date__lte=datetime.datetime(year=int(query), month=12, day=31))
+        ).prefetch_related(
+            'items'
+        )
+    
     context = {
         'menus': menus,
-        'searchform': MenuSearchForm()
+        'searchform': MenuSearchForm(),
+        'query': query
     }
     return render(request, 'menu/list_all_current_menus.html', context)
 
@@ -37,7 +59,8 @@ def menu_detail(request, pk):
     ).first()
     context = {
         'menu': menu,
-        'searchform': MenuSearchForm()
+        'searchform': MenuSearchForm(),
+        'breadcrumb_menu_url': request.META['HTTP_REFERER'],
     }
     return render(request, 'menu/menu_detail.html', context)
 
@@ -106,6 +129,7 @@ def edit_menu(request, pk):
 
 
 def menu_search(request):
+    menus = Menu.objects.none()
     if request.method == 'GET':
         searchform = MenuSearchForm(request.GET)
         if searchform.is_valid():
@@ -117,7 +141,11 @@ def menu_search(request):
             )
             context = {
                 'menus': menus,
-                'searchform': MenuSearchForm()
+                'searchform': MenuSearchForm(),
             }
             return render(request, 'menu/list_all_current_menus.html', context)
+    context = {
+                'menus': menus,
+                'searchform': MenuSearchForm(),
+            }
     return render(request, 'menu/list_all_current_menus.html', context)

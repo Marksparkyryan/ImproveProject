@@ -26,19 +26,16 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'menu:menu_list' %}">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'menu:home' %}">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'menu:menu_new' %}">New Menu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </li>
             </ul>
             <!-- Search Box -->
             <form class="form-inline" action="{% url 'menu:menu_search' %}" method="GET">
                 {% csrf_token %}
-                <input class="form-control mr-sm-2 is-invalid" name="q" id="id_q" type="search" placeholder="{% if form.q.errors %}{{ form.q.error }}{% else %}Search Menus{% endif %}" aria-label="Search">
+                <input class="form-control mr-sm-2" name="q" id="id_q" type="search" placeholder="Search Menus" aria-label="Search">    
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search All</button>
             </form>
             <!-- /Search Box -->

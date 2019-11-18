@@ -9,22 +9,27 @@
         <!-- Filter List -->
         <div class="col-sm-2 bg-transparent">
             <div class="list-group mb-2">
-                <button type="button" class="list-group-item list-group-item-action">All</button>
-                <button type="button" class="list-group-item list-group-item-action">Fresh</button>
-                <button type="button" class="list-group-item list-group-item-action">Expired</button>
+                <a href="{% url 'menu:menu_list' query='all' %}" 
+                class="list-group-item list-group-item-action {% if query == 'all'%}active{% endif %}">All</a>
+                <a href="{% url 'menu:menu_list' query='fresh' %}" 
+                class="list-group-item list-group-item-action {% if query == 'fresh'%}active{% endif %}">Fresh</a>
+                <a href="{% url 'menu:menu_list' query='expired' %}" 
+                class="list-group-item list-group-item-action {% if query == 'expired'%}active{% endif %}">Expired</a>
             </div>
             <div class="list-group">
-                
+                {% if menus %}            
                 {% menu_years menus as years %}
                 {% if years %}
                 {% for year in years %}
+                <a href="{% url 'menu:menu_list' query=year %}">
                 <button type="button" class="list-group-item list-group-item-action">
+                
                 {{ year }}
                 </button>
+                </a>
                 {% endfor %}
                 {% endif %}
-                
-                
+                {% endif %}
             </div>
         </div>
     <!-- /Filter List -->
@@ -50,7 +55,7 @@
                                 {% endif %}
                             
                         </div>
-                        <small class="text-muted">9 mins</small>
+                        <small class="text-muted">Expires: {{ menu.expiration_date|date:"M, Y" }}</small>
                     </div>
                 </div>
             </div>
