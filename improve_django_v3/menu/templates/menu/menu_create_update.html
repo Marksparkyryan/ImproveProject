@@ -31,18 +31,13 @@
                     <div class="invalid-feedback">{{ form.items.errors }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="id_expiration_date">Expiration Date</label>
-                    <input type="date" class="form-control {% if form.expiration_date.errors %}is-invalid{% endif %}"
-                        id="id_expiration_date" name="expiration_date"
-                        value="{{ form.expiration_date.value|date:'Y-m-d' }}" placeholder=""
-                        aria-describedby="expiration date">
-                    <div class="invalid-feedback">{{ form.expiration_date.errors }}</div>
+                    <label for="id_expiry">Expiration Date</label>
+                    <input type="date" class="form-control {% if form.expiry.errors %}is-invalid{% endif %}" id="id_expiry"
+                        name="expiry" value="{{ form.expiry.value|date:'Y-m-d' }}" aria-describedby="expiration date">
+                    <div class="invalid-feedback">{{ form.expiry.errors }}</div>
                 </div>
-                <div class="button-group">
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="{% url 'menu:menu_detail' pk=menu.id %}" class="btn btn-warning">Cancel</a>
-                </div>
-                
+                    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-warning">Cancel</a>
             </form>
         </div>
     </div>

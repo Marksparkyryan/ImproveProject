@@ -13,6 +13,8 @@ from .models import Menu, Item, Ingredient
 from .forms import  MenuCreateUpdateForm, MenuSearchForm
 
 
+
+
 def menu_list(request, query='fresh'):
     """Display all menus and items related to each menu ordered by 
     expiration date 
@@ -23,20 +25,20 @@ def menu_list(request, query='fresh'):
         )
     if query == 'fresh':
         menus = Menu.objects.all().filter(
-            expiration_date__gte=datetime.datetime.now()
+            expiry__gte=datetime.date.today()
         ).prefetch_related(
             'items'
         )
     if query == 'expired':
         menus = Menu.objects.all().filter(
-            expiration_date__lt=datetime.datetime.now()
+            expiry__lt=datetime.date.today()
         ).prefetch_related(
             'items'
         ) 
     if query.isdigit():
         menus = Menu.objects.all().filter(
-            Q(expiration_date__gte=datetime.datetime(year=int(query), month=1, day=1)) &
-            Q(expiration_date__lte=datetime.datetime(year=int(query), month=12, day=31))
+            Q(expiry__gte=datetime.date(year=int(query), month=1, day=1)) &
+            Q(expiry__lte=datetime.date(year=int(query), month=12, day=31))
         ).prefetch_related(
             'items'
         )
@@ -46,6 +48,8 @@ def menu_list(request, query='fresh'):
         'searchform': MenuSearchForm(),
         'query': query
     }
+    #provides a return path to the homepage with the same parameters
+    request.session['breadcrumb_menu_list_path'] = request.path    
     return render(request, 'menu/list_all_current_menus.html', context)
 
 
@@ -142,10 +146,15 @@ def menu_search(request):
             context = {
                 'menus': menus,
                 'searchform': MenuSearchForm(),
+                'query': query
             }
+            #provides a return path to the homepage with the same parameters
+            request.session['breadcrumb_menu_list_path'] = request.get_full_path() 
+
             return render(request, 'menu/list_all_current_menus.html', context)
     context = {
                 'menus': menus,
                 'searchform': MenuSearchForm(),
             }
     return render(request, 'menu/list_all_current_menus.html', context)
+    

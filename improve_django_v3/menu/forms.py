@@ -9,6 +9,7 @@ class MenuCreateUpdateForm(forms.ModelForm):
         queryset=Item.objects.all(),
         required=False,
     )
+    expiry = forms.DateField(input_formats=['%Y-%m-%d'])
 
     class Meta:
         model = Menu

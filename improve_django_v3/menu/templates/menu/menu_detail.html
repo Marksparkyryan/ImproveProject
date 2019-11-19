@@ -5,7 +5,7 @@
         <!-- Breadcrumb -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-dark">
-                <li class="breadcrumb-item"><a href="{{ breadcrumb_menu_url }}">Menus</a></li>
+                <li class="breadcrumb-item"><a href="{{ request.session.breadcrumb_menu_list_path }}">Menus</a></li>
                 <li class="breadcrumb-item"><a href="#">{{ menu.season }}</a></li>
             </ol>
             </nav>
@@ -20,9 +20,7 @@
                         <a href="{% url 'menu:item_detail' item_pk=item.pk menu_pk=menu.pk %}">
                             <h4 class="my-0">{{ item.name }}</h4>
                         </a>
-                        <p class="lead mb-4">Multiple lines of text that form the lede, informing new readers quickly and
-                            efficiently
-                            about what’s most interesting in this post’s contents.</p>
+                        <p class="lead mb-4">{{ item.description|truncatewords:'24' }}</p>
                         {% endfor %}
                     </ul>
             
@@ -33,7 +31,7 @@
             <nav class="navbar navbar-light bg-dark rounded p-4">
                 <form class="form-inline">
                     <p class="lead mb-0 text-white font-weight-bold">Menu expires on:</p>
-                    <p class="text-white mb-0 font-italic ml-2">{{ menu.expiration_date }}</p>
+                    <p class="text-white mb-0 font-italic ml-2">{{ menu.expiry }}</p>
                 </form>
                 <a href="{% url 'menu:menu_edit' pk=menu.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
             </nav>

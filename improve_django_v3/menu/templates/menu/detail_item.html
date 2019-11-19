@@ -5,7 +5,7 @@
 <!-- Breadcrumb -->
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-dark">
-        <li class="breadcrumb-item"><a href="#">Menus</a></li>
+        <li class="breadcrumb-item"><a href="{{ request.session.breadcrumb_menu_list_path }}">Menus</a></li>
         <li class="breadcrumb-item"><a href="{% url 'menu:menu_detail' pk=menu.id %}">{{ menu.season }}</a></li>
         <li class="breadcrumb-item"><a href="#">{{ item }}</a></li>
     </ol>
@@ -19,20 +19,16 @@
         <blockquote class="blockquote text-left">
             <footer class="blockquote-footer">{{ item.chef }}, <cite title="Source Title">Chef</cite></footer>
         </blockquote>
-        <p class="lead mb-4">Multiple lines of text that form the lede, informing
-            new readers quickly and efficiently about what’s most interesting in
-            this post’s contents.</p>
+        <p class="lead mb-4">{{ item.description }}</p>
         <ul class="pl-3">
             {% for ingredient in item.ingredients.all %}
             <li>
                 <p>{{ ingredient.name }}</p>
-            </li>
-            
+            </li>          
             {% endfor %}
-        </ul>  
-        
+        </ul>          
     </div>
-    <p class="text-muted font-italic mt-5 d-inline-block mb-0">created: {{ item.created_date }}</p>
+    <p class="text-muted font-italic mt-5 d-inline-block mb-0">created: {{ item.created }}</p>
     {% if item.standard %}
     <p class="text-muted font-italic mt-5 d-inline-block float-right mb-0">Standard Item</p>
     {% endif %}
