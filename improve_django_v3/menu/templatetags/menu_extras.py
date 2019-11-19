@@ -8,20 +8,12 @@ from ..models import Menu
 
 register = template.Library()
 
+YEARS = [str(year) for year in range(2011, (datetime.datetime.now().year + 1))]
+
 
 @register.simple_tag()
-def menu_years(query):
-    """Retrieve lowest expiration year in all menu objects, then create 
-    and return a range of years from then up to now
+def menu_years():
+    """Return range of expiration years
     """
-    if query.exists():
-        years = query.aggregate(
-            lowest_year=Min('expiration_date'),
-            highest_year=Max('expiration_date'),
-        )
-        menu_years = [year for year in range(
-            years['lowest_year'].year, years['highest_year'].year)]
-    else:
-        menu_years = None
-    return menu_years
+    return YEARS
 
