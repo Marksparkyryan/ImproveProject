@@ -10,23 +10,22 @@ def correct_dates(apps, schema_editor):
         try:
             for menu in Menu.objects.all():
                 if menu.created_date:
-                    menu.created_date = menu.created_date.date()
+                    menu.created = menu.created_date.date()
                 else:
                     menu.created_date = datetime.date.today()
                 if menu.expiration_date:     
-                    menu.expiration_date = menu.expiration_date.date()
-                menu.save()
-                print("done done done") 
+                    menu.expiry = menu.expiration_date.date()
+                menu.save() 
 
             Item = apps.get_model('menu', 'Item')
             for item in Item.objects.all():
                 if item.created_date:
-                    item.created_date = item.created_date.date()
+                    item.created = item.created_date.date()
                 else:
-                    item.created_date = datetime.date.today()
+                    item.created = datetime.date.today()
                 item.save()
         except Error as err:
-            print("Looky: ", err)
+            print("Error: ", err)
 
 
 class Migration(migrations.Migration):
