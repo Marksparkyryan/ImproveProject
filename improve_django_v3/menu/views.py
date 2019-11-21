@@ -2,7 +2,7 @@ import datetime
 # import pytz
 
 from django.core.urlresolvers import reverse
-from django.db.models import Min, Max, Prefetch, Q
+from django.db.models import Min, Max, Prefetch, Q, Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.utils import timezone
@@ -28,13 +28,17 @@ def menu_list(request, query='fresh'):
             expiry__gte=datetime.date.today()
         ).prefetch_related(
             'items'
+        ).order_by(
+            '-created'
         )
     if query == 'expired':
         menus = Menu.objects.all().filter(
             expiry__lt=datetime.date.today()
         ).prefetch_related(
             'items'
-        ) 
+        ).order_by(
+            '-expiry'
+        )
     if query.isdigit():
         menus = Menu.objects.all().filter(
             Q(expiry__gte=datetime.date(year=int(query), month=1, day=1)) &
@@ -42,11 +46,11 @@ def menu_list(request, query='fresh'):
         ).prefetch_related(
             'items'
         )
-    
+
     context = {
         'menus': menus,
         'searchform': MenuSearchForm(),
-        'query': query
+        'query': query,
     }
     #provides a return path to the homepage with the same parameters
     request.session['breadcrumb_menu_list_path'] = request.path    
@@ -133,7 +137,7 @@ def edit_menu(request, pk):
 
 
 def menu_search(request):
-    menus = Menu.objects.none()
+    searchform = MenuSearchForm()
     if request.method == 'GET':
         searchform = MenuSearchForm(request.GET)
         if searchform.is_valid():
@@ -153,8 +157,8 @@ def menu_search(request):
 
             return render(request, 'menu/list_all_current_menus.html', context)
     context = {
-                'menus': menus,
-                'searchform': MenuSearchForm(),
-            }
+        'searchform': searchform,
+        'menus': None
+    }
     return render(request, 'menu/list_all_current_menus.html', context)
     

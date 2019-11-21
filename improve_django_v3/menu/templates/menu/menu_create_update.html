@@ -12,29 +12,46 @@
             <form method="POST" 
             action="{% if menu %}{% url 'menu:menu_edit' pk=menu.pk %}{% else %}{% url 'menu:menu_new' %}{% endif %}">
                 {% csrf_token %}
+                
                 <div class="form-group">
                     <label for="id_season">Season</label>
                     <input type="text" class="form-control {% if form.season.errors %}is-invalid{% endif %}"
-                        id="id_season" name="season" value="{{ form.season.value }}" aria-describedby="season">
-                    <div class="invalid-feedback">{{ form.season.errors }}</div>
+                    id="id_season" name="season" aria-describedby="season"
+                    {% if form.season.value != None %}value="{{ form.season.value }}{% endif %}"
+                    {% for attr,value in form.season.field.widget.attrs.items %}{{ attr }}="{{ value }}"{% endfor %}>
+                    <div class="invalid-feedback">
+                    {% for error in form.season.errors %}
+                    {{ error }}
+                    {% endfor %}
+                    </div>
                 </div>
+
                 <div class="form-group">
                     <label for="id_items">Items</label>
                     <select multiple="multiple" multiple
-                        class="selectpicker {% if form.items.errors %}is-invalid{% endif %}" id="id_items" multiple
+                        class="selectpicker form-control {% if form.items.errors %}is-invalid{% endif %}" id="id_items" multiple
                         data-live-search="true" data-width="100%" data-selected-text-format="count" name="items">
                         {% for x, y in form.fields.items.choices %}
                         <option value="{{ x }}" {% if x in form.items.value %}selected="selected" {% endif %}>
                             {{ y|truncatewords:5 }}</option>
                         {% endfor %}
                     </select>
-                    <div class="invalid-feedback">{{ form.items.errors }}</div>
+                    <div class="invalid-feedback">
+                    {% for error in form.items.errors %}
+                    {{ error }}
+                    {% endfor %}
+                    </div>
                 </div>
+                
                 <div class="form-group">
                     <label for="id_expiry">Expiration Date</label>
                     <input type="date" class="form-control {% if form.expiry.errors %}is-invalid{% endif %}" id="id_expiry"
-                        name="expiry" value="{{ form.expiry.value|date:'Y-m-d' }}" aria-describedby="expiration date">
-                    <div class="invalid-feedback">{{ form.expiry.errors }}</div>
+                    name="expiry" value="{{ form.expiry.value|date:'Y-m-d' }}" aria-describedby="expiration date">
+                    <div class="invalid-feedback">
+                    {% for error in form.expiry.errors %}
+                    {{ error }}
+                    {% endfor %}
+                    </div>
                 </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-warning">Cancel</a>

@@ -4,16 +4,21 @@
 
 {% block body %}
 <div class="container">
-    
+
     <!-- Result Text -->
     <div class="row">
-        <p class="text-muted font-italic ml-auto pr-3">"{{ query}}" results</p>
+        {% if query != None %}
+        <p class="text-muted font-italic ml-auto pr-3">results for "{{ query }}"</p>
+        {% else %}
+        <p class="text-muted font-italic ml-auto pr-3">What are you searching for?"</p>
+        {% endif %}
     </div>
     <!-- /Result Text -->
 
     <div class="row">
+
         <!-- Filter List -->
-        <div class="col-sm-2 bg-transparent">
+        <div class="col-lg-2 bg-transparent">
             <div class="list-group mb-2">
                 <a href="{% url 'menu:menu_list' query='all' %}" 
                 class="list-group-item list-group-item-action {% if query == 'all'%}active{% endif %}">All</a>
@@ -35,27 +40,26 @@
 
     <!-- Menu Cards -->
     {% if menus %}
-    <div class="col-sm-10">
+    <div class="col-lg-10">
         <div class="card-columns">
             {% for menu in menus %}
             <div class="card mb-4 shadow-sm">
                 <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
                     <title>{{ menu.season }}</title>
-                    <rect width="100%" height="100%" fill="#343a40"></rect><text x="50%" y="50%" fill="#eceeef"
-                        dy=".3em"></text>
+                    <rect width="100%" height="100%" fill="#343a40"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text>
                 </svg>
                 <div class="card-body">
-                        <h5 class="card-title">{{ menu.season }}</h5>
+                    <h5 class="card-title">{{ menu.season }}</h5>
                     <p class="card-text">{{ menu.items.all|join:", " }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <small class="text-muted">Expires: {{ menu.expiry }}</small>
                         <div class="btn-group">
-                                <a href="{% url 'menu:menu_detail' pk=menu.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
-                                {% if user.is_authenticated %}
-                                <a href="{% url 'menu:menu_edit' pk=menu.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                {% endif %}                          
-                        </div>    
+                            <a href="{% url 'menu:menu_detail' pk=menu.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'menu:menu_edit' pk=menu.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,6 +70,7 @@
         </div>
     </div>
     <!-- /Menu Cards -->
+
   </div>
 </div>
 {% endblock %}
