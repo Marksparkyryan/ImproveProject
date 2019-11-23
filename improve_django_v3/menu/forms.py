@@ -38,10 +38,8 @@ class MenuSearchForm(forms.Form):
     
     def clean_q(self):
         data = self.cleaned_data['q']
-        print("data: ", data)
         if not data:
             raise forms.ValidationError("What are you searching for?")
-        print("data: ", data)
         return data
 
 

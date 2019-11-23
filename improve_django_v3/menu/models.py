@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -14,7 +15,7 @@ class Menu(models.Model):
 class Item(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
-    chef = models.ForeignKey('auth.User')
+    chef = models.ForeignKey(User)
     created = models.DateField(auto_now_add=True, null=True)
     standard = models.BooleanField(default=False)
     ingredients = models.ManyToManyField('Ingredient')

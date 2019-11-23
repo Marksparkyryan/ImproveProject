@@ -1,5 +1,4 @@
 import datetime
-# import pytz
 
 from django.core.urlresolvers import reverse
 from django.db.models import Min, Max, Prefetch, Q, Count
@@ -11,8 +10,6 @@ from operator import attrgetter
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Menu, Item, Ingredient
 from .forms import  MenuCreateUpdateForm, MenuSearchForm
-
-
 
 
 def menu_list(request, query='fresh'):
@@ -68,7 +65,6 @@ def menu_detail(request, pk):
     context = {
         'menu': menu,
         'searchform': MenuSearchForm(),
-        'breadcrumb_menu_url': request.META['HTTP_REFERER'],
     }
     return render(request, 'menu/menu_detail.html', context)
 
@@ -119,12 +115,13 @@ def create_new_menu(request):
 def edit_menu(request, pk):
     menu = Menu.objects.filter(
         id=pk
-        ).prefetch_related(
-            'items'
-        ).first()
+    ).prefetch_related(
+        'items'
+    ).first()
     form = MenuCreateUpdateForm(instance=menu)
+
     if request.method == 'POST':
-        form = MenuCreateUpdateForm(data=request.POST, instance=menu)
+        form = MenuCreateUpdateForm(instance=menu, data=request.POST)
         if form.is_valid():
             menu = form.save()
             return redirect(reverse('menu:menu_detail', kwargs={'pk': pk}))
@@ -138,6 +135,10 @@ def edit_menu(request, pk):
 
 def menu_search(request):
     searchform = MenuSearchForm()
+    context = {
+        'searchform': searchform,
+        'menus': None
+    }
     if request.method == 'GET':
         searchform = MenuSearchForm(request.GET)
         if searchform.is_valid():
@@ -156,9 +157,5 @@ def menu_search(request):
             request.session['breadcrumb_menu_list_path'] = request.get_full_path() 
 
             return render(request, 'menu/list_all_current_menus.html', context)
-    context = {
-        'searchform': searchform,
-        'menus': None
-    }
     return render(request, 'menu/list_all_current_menus.html', context)
     
