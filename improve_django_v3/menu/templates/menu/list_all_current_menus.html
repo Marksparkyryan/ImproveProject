@@ -20,23 +20,23 @@
         <!-- Filter List -->
         <div class="col-lg-2 bg-transparent">
             <div class="list-group mb-2">
-                <a href="{% url 'menu:menu_list' query='all' %}" 
-                class="list-group-item list-group-item-action {% if query == 'all'%}active{% endif %}">All</a>
-                <a href="{% url 'menu:menu_list' query='fresh' %}" 
-                class="list-group-item list-group-item-action {% if query == 'fresh'%}active{% endif %}">Fresh</a>
-                <a href="{% url 'menu:menu_list' query='expired' %}" 
-                class="list-group-item list-group-item-action {% if query == 'expired'%}active{% endif %}">Expired</a>
+                <a href="{% url 'menu:menu_list' query='all' %}"
+                    class="list-group-item list-group-item-action {% if query == 'all'%}active{% endif %}">All</a>
+                <a href="{% url 'menu:menu_list' query='fresh' %}"
+                    class="list-group-item list-group-item-action {% if query == 'fresh'%}active{% endif %}">Fresh</a>
+                <a href="{% url 'menu:menu_list' query='expired' %}"
+                    class="list-group-item list-group-item-action {% if query == 'expired'%}active{% endif %}">Expired</a>
             </div>
-            <div class="list-group">            
-                {% menu_years as years %}           
-                {% for year in years %} 
+            <div class="list-group">
+                {% menu_years as years %}
+                {% for year in years %}
                 <a href="{% url 'menu:menu_list' query=year %}"
-                class="list-group-item list-group-item-action {% if year == query %}active{% endif %}">{{ year }}</a>
+                    class="list-group-item list-group-item-action {% if year == query %}active{% endif %}">{{ year }}</a>
                 </a>
                 {% endfor %}
             </div>
         </div>
-    <!-- /Filter List -->
+        <!-- /Filter List -->
 
     <!-- Menu Cards -->
     {% if menus %}

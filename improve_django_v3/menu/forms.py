@@ -1,10 +1,12 @@
 from django import forms
-from django.forms.extras.widgets import SelectDateWidget
 
 from .models import Menu, Item, Ingredient
 
-class MenuCreateUpdateForm(forms.ModelForm):
 
+class MenuCreateUpdateForm(forms.ModelForm):
+    """Model form representing the Menu model. This form also injects
+    all objects from the Item model
+    """
     season = forms.CharField(
         max_length=100, 
         required=True, 
@@ -22,6 +24,7 @@ class MenuCreateUpdateForm(forms.ModelForm):
         exclude = ('created_date',)
     
     def clean_items(self):
+        """Assert that at least one item is added to the menu"""
         data = self.cleaned_data['items']
         if not data:
             raise forms.ValidationError("Menus need at least one item added.")
@@ -29,6 +32,8 @@ class MenuCreateUpdateForm(forms.ModelForm):
 
 
 class MenuSearchForm(forms.Form):
+    """Form handling the Menu search box in the base template. 
+    """
     q = forms.CharField(
         required=False,
         max_length=48,
@@ -37,10 +42,8 @@ class MenuSearchForm(forms.Form):
         }))
     
     def clean_q(self):
+        """Raise error message if empty query is sent into search box"""
         data = self.cleaned_data['q']
         if not data:
             raise forms.ValidationError("What are you searching for?")
         return data
-
-
-

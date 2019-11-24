@@ -2,85 +2,42 @@
 
 {% block body %}
 <div class="container">
-        <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-dark">
-                <li class="breadcrumb-item"><a href="{{ request.session.breadcrumb_menu_list_path }}">Menus</a></li>
-                <li class="breadcrumb-item"><a href="#">{{ menu.season }}</a></li>
-            </ol>
-            </nav>
-            <!-- /Breadcrumb -->
-            
-            <!-- Detail Jumbotron -->
-            <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark mb-3">
-                <div class="col-md-6 px-0">
-                    <h1 class="display-4 font-italic">{{ menu.season }}</h1>
-                    <ul class="lead my-3 pl-0">
-                        {% for item in menu.items.all %}
-                        <a href="{% url 'menu:item_detail' item_pk=item.pk menu_pk=menu.pk %}">
-                            <h4 class="my-0">{{ item.name }}</h4>
-                        </a>
-                        <p class="lead mb-4">{{ item.description|truncatewords:'24' }}</p>
-                        {% endfor %}
-                    </ul>
-            
-                </div>
-            </div>
-            <!-- /Detail Jumbotron -->
-            
-            <nav class="navbar navbar-light bg-dark rounded p-4">
-                <form class="form-inline">
-                    {%if menu.expiry %}
-                    <p class="lead mb-0 text-white font-weight-bold">Menu expires on:</p>
-                    <p class="text-white mb-0 font-italic ml-2">{{ menu.expiry }}</p>
-                    {% endif %}
-                </form>
-                <a href="{% url 'menu:menu_edit' pk=menu.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-            </nav>
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-dark">
+            <li class="breadcrumb-item"><a href="{{ request.session.breadcrumb_menu_list_path }}">Menus</a></li>
+            <li class="breadcrumb-item"><a href="#">{{ menu.season }}</a></li>
+        </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+        
+    <!-- Detail Jumbotron -->
+    <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark mb-3">
+        <div class="col-md-6 px-0">
+            <h1 class="display-4 font-italic">{{ menu.season }}</h1>
+            <ul class="lead my-3 pl-0">
+                {% for item in menu.items.all %}
+                <a href="{% url 'menu:item_detail' item_pk=item.pk menu_pk=menu.pk %}">
+                    <h4 class="my-0">{{ item.name }}</h4>
+                </a>
+                <p class="lead mb-4">{{ item.description|truncatewords:'24' }}</p>
+                {% endfor %}
+            </ul>  
+        </div>
+    </div>
+    <!-- /Detail Jumbotron -->
+    
+    <!-- Menu Footer -->
+    <nav class="navbar navbar-light bg-dark rounded p-4">
+        <form class="form-inline">
+            {%if menu.expiry %}
+            <p class="lead mb-0 text-white font-weight-bold">Menu expires on:</p>
+            <p class="text-white mb-0 font-italic ml-2">{{ menu.expiry }}</p>
+            {% endif %}
+        </form>
+        <a href="{% url 'menu:menu_edit' pk=menu.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+    </nav>
+    <!-- /Menu Footer -->
 </div>
 
 {% endblock %}
-
-
-
-
-<!-- <html>
-    <head>
-        <title>Soda Fountain</title>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    </head>
-    <body>
-        <div class="page-header">
-            {% if user.is_authenticated %}
-                <a href="{% url 'menu:menu_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-            {% endif %}
-            <h1><a href="/">Soda Fountain</a></h1>
-        </div>
-        <div class="content container">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="post">
-                        <h1>
-                            {% if user.is_authenticated %}
-                                <a class="btn btn-default" href="{% url 'menu:menu_edit' pk=menu.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-                            {% endif %}
-                            {{ menu.season }}
-                        </h1>
-                        <h2>On the menu this season:</h2>
-                        <ul>
-                            {% for item in menu.items.all %}
-                                <li><a href="{% url 'menu:item_detail' pk=item.pk %}">{{ item }}</a></li>
-                            {% endfor %}
-                        </ul>
-                        {% if menu.expiration_date %}
-                            <div class="date">
-                                Menu expires on {{ menu.expiration_date|date:"F j, Y" }}
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </body>
-</html> -->

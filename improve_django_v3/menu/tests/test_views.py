@@ -122,6 +122,7 @@ class MenuDetailTests(TestCase):
         self.assertContains(resp, 'Pizza4life')
         self.assertContains(resp, 'Spring 2019')
     
+    
 class ItemDetailTests(TestCase):
     def setUp(self):
         user1 = User.objects.create(

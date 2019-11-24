@@ -3,6 +3,8 @@ from django.db import models
 
 
 class Menu(models.Model):
+    """Model representing a Menu that contains Items
+    """
     season = models.CharField(max_length=20)
     items = models.ManyToManyField('Item', related_name='items')
     created = models.DateField(auto_now_add=True, null=True)
@@ -13,6 +15,8 @@ class Menu(models.Model):
 
 
 class Item(models.Model):
+    """Model representing an Item that contains Ingredients
+    """
     name = models.CharField(max_length=200)
     description = models.TextField()
     chef = models.ForeignKey(User)
@@ -25,6 +29,8 @@ class Item(models.Model):
 
 
 class Ingredient(models.Model):
+    """Model representing an Ingredient 
+    """
     name = models.CharField(max_length=200)
 
     def __str__(self):

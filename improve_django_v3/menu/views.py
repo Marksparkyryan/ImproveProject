@@ -13,8 +13,8 @@ from .forms import  MenuCreateUpdateForm, MenuSearchForm
 
 
 def menu_list(request, query='fresh'):
-    """Display all menus and items related to each menu ordered by 
-    expiration date 
+    """Display all menus and items related to each menu ordered by the
+    passed in query
     """
     if query == 'all':
         menus = Menu.objects.all().prefetch_related(
@@ -70,6 +70,8 @@ def menu_detail(request, pk):
 
 
 def item_list(request):
+    """Fetches and returns all Item objects ordered by id
+    """
     items = Item.objects.all().select_related(
         'chef'
     ).order_by('id')
@@ -123,6 +125,9 @@ def create_new_menu(request):
 
 
 def edit_menu(request, pk):
+    """Fetch a menu instance bases on passed pk and display the existing 
+    data for editing. Handles and saves new posted data. 
+    """
     menu = Menu.objects.filter(
         id=pk
     ).prefetch_related(
@@ -144,6 +149,9 @@ def edit_menu(request, pk):
 
 
 def menu_search(request):
+    """Search all Menu objects for seasons matching the form query and 
+    return queryset
+    """
     searchform = MenuSearchForm()
     context = {
         'searchform': searchform,
