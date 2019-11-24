@@ -22,8 +22,8 @@ Some of the Changes Included:
 2. git clone ```https://github.com/Marksparkyryan/ImproveProject.git``` to clone the app
 3. ```virtualenv .venv``` to create your virtual environment
 4. ```source .venv/bin/activate``` to activate the virtual environment
-5. ```pip install -r ImproveProject/requirements.txt``` to install app requirements
-6. cd into the ImproveProject/improveproject directory
+5. ```pip install -r improve_django_v3/requirements.txt``` to install app requirements
+6. cd into the ImproveProject/improve_django_v3_ directory
 7. ```python manage.py migrate``` to apply the existing data and model migrations
 8. ```python manage.py runserver``` to serve the site to your local host (in DEBUG mode)
 9. visit ```http://127.0.0.1:8000/``` to see some menus! 
