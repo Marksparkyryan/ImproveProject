@@ -34,6 +34,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'menu:menu_new' %}">New Menu</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'menu:item_list' %}">All Items</a>
+                </li>
             </ul>
 
             <!-- Search Box -->
@@ -69,8 +72,6 @@
     {% block body %}
     {% endblock %}
 
-
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -85,56 +86,54 @@
     
     {% block js %}
     {% endblock %}
-    
-    
+     
 </body>
 
     <!-- Footer -->
     <footer class="container-fluid py-5 bg-light mt-5 text-center">
         <div class="container">
-                <div class="row">
-                        <div class="col-6 col-md">
-                          <h5>{% lorem 1 w random %}</h5>
-                          <ul class="list-unstyled text-small">
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                          </ul>
-                        </div>
-                        <div class="col-6 col-md">
-                          <h5>{% lorem 1 w random %}</h5>
-                          <ul class="list-unstyled text-small">
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 2 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 2 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 2 w random %}</a></li>
-                          </ul>
-                        </div>
-                        <div class="col-6 col-md">
-                          <h5>{% lorem 1 w random %}</h5>
-                          <ul class="list-unstyled text-small">
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                          </ul>
-                        </div>
-                        <div class="col-6 col-md">
-                          <h5>{% lorem 1 w random %}</h5>
-                          <ul class="list-unstyled text-small">
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}/a></li>
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                            <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
-                          </ul>
-                        </div>
-                      </div>
+            <div class="row">
+                <div class="col-6 col-md">
+                    <h5>{% lorem 1 w random %}</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>{% lorem 1 w random %}</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 2 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 2 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 2 w random %}</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>{% lorem 1 w random %}</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5>{% lorem 1 w random %}</h5>
+                    <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}/a></li>
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                        <li><a class="text-muted" href="#">{% lorem 1 w random %}</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-            
-          </footer>
+    </footer>
     <!-- /Footer -->
 
 </html>

@@ -2,7 +2,10 @@
 
 {% block body %}
 <div class="container">
+
+
 <!-- Breadcrumb -->
+{% if menu != None %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-dark">
         <li class="breadcrumb-item"><a href="{{ request.session.breadcrumb_menu_list_path }}">Menus</a></li>
@@ -10,7 +13,16 @@
         <li class="breadcrumb-item"><a href="#">{{ item }}</a></li>
     </ol>
 </nav>
+{% else %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-dark">
+        <li class="breadcrumb-item"><a href="{% url 'menu:item_list' %}">Items</a></li>
+        <li class="breadcrumb-item"><a href="#">{{ item.name|truncatewords:"5" }}</a></li>
+    </ol>
+</nav>
+{% endif %}
 <!-- /Breadcrumb -->
+
 
 <!-- Detail Jumbotron -->
 <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark mb-3"> 

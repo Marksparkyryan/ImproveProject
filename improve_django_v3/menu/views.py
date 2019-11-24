@@ -69,7 +69,14 @@ def menu_detail(request, pk):
     return render(request, 'menu/menu_detail.html', context)
 
 
-def item_detail(request, item_pk, menu_pk):
+def item_list(request):
+    items = Item.objects.all().select_related(
+        'chef'
+    ).order_by('id')
+    return render(request, 'menu/item_list.html', {'items': items}) 
+
+
+def item_detail(request, item_pk, menu_pk=None):
     """Fetch item details and prefetch the ingredients and select the 
     related chef as well 
     """
@@ -81,12 +88,15 @@ def item_detail(request, item_pk, menu_pk):
         'chef'
     ).first()
 
-    menu = Menu.objects.filter(
-        pk=menu_pk
-        ).values(
-            'season',
-            'id'
-        ).first()
+    if menu_pk is not None:
+        menu = Menu.objects.filter(
+            pk=menu_pk
+            ).values(
+                'season',
+                'id'
+            ).first()
+    else:
+        menu=None
 
     context = {
         'item': item,

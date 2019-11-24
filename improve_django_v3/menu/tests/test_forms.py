@@ -96,5 +96,3 @@ class MenuSearchFormTests(TestCase):
         data = {'q': 'pizza'}
         form = MenuSearchForm(data=data)
         self.assertTrue(form.is_valid())
-    
-

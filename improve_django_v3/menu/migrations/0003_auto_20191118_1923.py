@@ -4,7 +4,10 @@ from __future__ import unicode_literals
 import datetime 
 from django.db import migrations, transaction
 
+
 def move_dates_over(apps, schema_editor):
+    """Converts the datetime field into a date field 
+    """
     with transaction.atomic():
         Menu = apps.get_model('menu', 'Menu')
         for menu in Menu.objects.all():
