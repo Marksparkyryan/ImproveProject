@@ -1,10 +1,6 @@
 import datetime
 
-from django.db.models import Min, Max
-from django.db.models import Min
 from django import template
-
-from ..models import Menu
 
 register = template.Library()
 

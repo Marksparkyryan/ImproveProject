@@ -11,7 +11,7 @@ class MenuModelTests(TestCase):
         user1 = User.objects.create(
             username="Sparky",
             password="password"
-        ) 
+        )
         pepperoni = Ingredient.objects.create(
             name="Pepperoni"
         )
@@ -27,7 +27,7 @@ class MenuModelTests(TestCase):
             expiry=datetime.date(year=2099, month=1, day=1)
         )
         spring_menu.items.add(pizza)
-    
+
     def test_str_method(self):
         menu = Menu.objects.get(id=1)
         self.assertEqual(str(menu), menu.season)
@@ -38,7 +38,7 @@ class ItemModelTests(TestCase):
         user1 = User.objects.create(
             username="Sparky",
             password="password"
-        ) 
+        )
         pepperoni = Ingredient.objects.create(
             name="Pepperoni"
         )
@@ -54,7 +54,7 @@ class ItemModelTests(TestCase):
             expiry=datetime.date(year=2099, month=1, day=1)
         )
         spring_menu.items.add(pizza)
-    
+
     def test_str_method(self):
         item = Item.objects.get(id=1)
         self.assertEqual(str(item), item.name)
@@ -65,7 +65,7 @@ class IngredientModelTests(TestCase):
         user1 = User.objects.create(
             username="Sparky",
             password="password"
-        ) 
+        )
         pepperoni = Ingredient.objects.create(
             name="Pepperoni"
         )
@@ -81,8 +81,7 @@ class IngredientModelTests(TestCase):
             expiry=datetime.date(year=2099, month=1, day=1)
         )
         spring_menu.items.add(pizza)
-    
+
     def test_str_method(self):
         ingredient = Ingredient.objects.get(id=1)
         self.assertEqual(str(ingredient), ingredient.name)
-        

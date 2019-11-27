@@ -6,12 +6,13 @@ from django.test import TestCase
 from ..forms import MenuCreateUpdateForm, MenuSearchForm
 from ..models import Menu, Item, Ingredient
 
+
 class MenuCreateFormTests(TestCase):
     def setUp(self):
         user1 = User.objects.create(
             username="Sparky",
             password="password"
-        ) 
+        )
         pepperoni = Ingredient.objects.create(
             name="Pepperoni"
         )
@@ -36,7 +37,7 @@ class MenuCreateFormTests(TestCase):
         }
         form = MenuCreateUpdateForm(data=data)
         self.assertFalse(form.is_valid())
-    
+
     def test_form_invalid_items(self):
         data = {
             'season': 'Spring2345',
@@ -45,7 +46,7 @@ class MenuCreateFormTests(TestCase):
         }
         form = MenuCreateUpdateForm(data=data)
         self.assertFalse(form.is_valid())
-    
+
     def test_form_invalid_date(self):
         data = {
             'season': 'Spring2345',
@@ -54,7 +55,7 @@ class MenuCreateFormTests(TestCase):
         }
         form = MenuCreateUpdateForm(data=data)
         self.assertFalse(form.is_valid())
-    
+
     def test_form_valid(self):
         data = {
             'season': "Fall2020",
@@ -70,7 +71,7 @@ class MenuSearchFormTests(TestCase):
         user1 = User.objects.create(
             username="Sparky",
             password="password"
-        ) 
+        )
         pepperoni = Ingredient.objects.create(
             name="Pepperoni"
         )
@@ -86,7 +87,7 @@ class MenuSearchFormTests(TestCase):
             expiry=datetime.date(year=2099, month=1, day=1)
         )
         spring_menu.items.add(pizza)
-    
+
     def test_empty_search(self):
         data = {'q': None}
         form = MenuSearchForm(data=data)
