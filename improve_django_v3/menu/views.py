@@ -1,14 +1,10 @@
 import datetime
 
 from django.core.urlresolvers import reverse
-from django.db.models import Min, Max, Prefetch, Q, Count
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import Http404
-from django.utils import timezone
-from operator import attrgetter
+from django.db.models import Q
+from django.shortcuts import render, redirect
 
-from django.core.exceptions import ObjectDoesNotExist
-from .models import Menu, Item, Ingredient
+from .models import Menu, Item
 from .forms import  MenuCreateUpdateForm, MenuSearchForm
 
 
@@ -50,7 +46,7 @@ def menu_list(request, query='fresh'):
         'query': query,
     }
     #provides a return path to the homepage with the same parameters
-    request.session['breadcrumb_menu_list_path'] = request.path    
+    request.session['breadcrumb_menu_list_path'] = request.path
     return render(request, 'menu/list_all_current_menus.html', context)
 
 
@@ -75,12 +71,12 @@ def item_list(request):
     items = Item.objects.all().select_related(
         'chef'
     ).order_by('id')
-    return render(request, 'menu/item_list.html', {'items': items}) 
+    return render(request, 'menu/item_list.html', {'items': items})
 
 
 def item_detail(request, item_pk, menu_pk=None):
-    """Fetch item details and prefetch the ingredients and select the 
-    related chef as well 
+    """Fetch item details and prefetch the ingredients and select the
+    related chef as well
     """
     item = Item.objects.filter(
         pk=item_pk
@@ -98,7 +94,7 @@ def item_detail(request, item_pk, menu_pk=None):
                 'id'
             ).first()
     else:
-        menu=None
+        menu = None
 
     context = {
         'item': item,
@@ -116,7 +112,7 @@ def create_new_menu(request):
         form = MenuCreateUpdateForm(request.POST)
         if form.is_valid():
             menu = form.save()
-            return redirect(reverse('menu:menu_detail', kwargs={'pk': menu.id }))
+            return redirect(reverse('menu:menu_detail', kwargs={'pk': menu.id}))
     context = {
         'form': form,
         'searchform': MenuSearchForm()
@@ -125,8 +121,8 @@ def create_new_menu(request):
 
 
 def edit_menu(request, pk):
-    """Fetch a menu instance bases on passed pk and display the existing 
-    data for editing. Handles and saves new posted data. 
+    """Fetch a menu instance bases on passed pk and display the existing
+    data for editing. Handles and saves new posted data.
     """
     menu = Menu.objects.filter(
         id=pk
@@ -149,7 +145,7 @@ def edit_menu(request, pk):
 
 
 def menu_search(request):
-    """Search all Menu objects for seasons matching the form query and 
+    """Search all Menu objects for seasons matching the form query and
     return queryset
     """
     searchform = MenuSearchForm()
@@ -172,7 +168,9 @@ def menu_search(request):
                 'query': query
             }
             #provides a return path to the homepage with the same parameters
-            request.session['breadcrumb_menu_list_path'] = request.get_full_path() 
+            request.session[
+                'breadcrumb_menu_list_path'
+                ] = request.get_full_path()
 
             return render(request, 'menu/list_all_current_menus.html', context)
     return render(request, 'menu/list_all_current_menus.html', context)
